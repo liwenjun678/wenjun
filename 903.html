@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日食物随机选择器</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.food-display {
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 10px 5px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.food-list {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.food-list h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#foodInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.animation {
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>今天吃什么？</h1>
+        
+        <div class="food-display" id="foodDisplay">
+            <p>点击下方按钮开始选择</p>
+        </div>
+        
+        <button id="randomizeBtn">随机选择</button>
+        
+        <div class="food-list">
+            <h2>我的食物列表</h2>
+            <textarea id="foodInput" rows="10" placeholder="每行输入一种食物，例如：
+米饭
+面条
+饺子
+汉堡"></textarea>
+            <button id="saveBtn">保存列表</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
