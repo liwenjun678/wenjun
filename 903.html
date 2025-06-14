@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,106 +8,108 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-.container {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
 
-h1 {
-    color: #333;
-    margin-bottom: 30px;
-}
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
 
-.food-display {
-    background-color: #f0f8ff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
-    min-height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #2c3e50;
-}
+        .food-display {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin: 10px 5px;
-}
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 5px;
+        }
 
-button:hover {
-    background-color: #2980b9;
-}
+        button:hover {
+            background-color: #2980b9;
+        }
 
-.food-list {
-    margin-top: 30px;
-    text-align: left;
-}
+        .food-list {
+            margin-top: 30px;
+            text-align: left;
+        }
 
-.food-list h2 {
-    color: #333;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
+        .food-list h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-#foodInput {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: vertical;
-    font-family: inherit;
-    margin-bottom: 10px;
-}
+        #foodInput {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
 
-.animation {
-    animation: pulse 0.5s infinite alternate;
-}
+        .animation {
+            animation: pulse 0.5s infinite alternate;
+        }
 
-@keyframes pulse {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.05);
-    }
-}
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>今天吃什么？</h1>
-        
+
         <div class="food-display" id="foodDisplay">
             <p>点击下方按钮开始选择</p>
         </div>
-        
+
         <button id="randomizeBtn">随机选择</button>
-        
+
         <div class="food-list">
             <h2>我的食物列表</h2>
             <textarea id="foodInput" rows="10" placeholder="每行输入一种食物，例如：
@@ -118,6 +121,87 @@ button:hover {
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const foodDisplay = document.getElementById('foodDisplay');
+            const randomizeBtn = document.getElementById('randomizeBtn');
+            const foodInput = document.getElementById('foodInput');
+            const saveBtn = document.getElementById('saveBtn');
+
+            // 默认食物列表
+            let foods = [
+                "米饭", "面条", "饺子", "包子", "汉堡",
+                "披萨", "沙拉", "炒饭", "寿司", "牛排",
+                "火锅", "烧烤", "三明治", "粥", "馄饨"
+            ];
+
+            // 尝试从本地存储加载食物列表
+            loadFoods();
+
+            // 随机选择食物
+            randomizeBtn.addEventListener('click', function () {
+                if (foods.length === 0) {
+                    foodDisplay.innerHTML = '<p>请先添加食物列表</p>';
+                    return;
+                }
+
+                // 添加动画效果
+                foodDisplay.classList.add('animation');
+
+                // 随机选择过程中的效果
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    const randomIndex = Math.floor(Math.random() * foods.length);
+                    foodDisplay.textContent = foods[randomIndex];
+
+                    iterations++;
+                    if (iterations > 10) {
+                        clearInterval(interval);
+                        foodDisplay.classList.remove('animation');
+
+                        // 最终选择
+                        const finalChoice = foods[Math.floor(Math.random() * foods.length)];
+                        foodDisplay.innerHTML = `<span class="final-choice">${finalChoice}</span>`;
+
+                        // 保存最后选择的时间
+                        localStorage.setItem('lastSelectedFood', finalChoice);
+                        localStorage.setItem('lastSelectionTime', new Date().toISOString());
+                    }
+                }, 100);
+            });
+
+            // 保存食物列表
+            saveBtn.addEventListener('click', function () {
+                const foodText = foodInput.value.trim();
+                if (foodText) {
+                    foods = foodText.split('\n').filter(item => item.trim() !== '');
+                    localStorage.setItem('foodList', JSON.stringify(foods));
+                    alert('食物列表已保存！');
+                }
+            });
+
+            // 从本地存储加载食物列表
+            function loadFoods() {
+                const savedFoods = localStorage.getItem('foodList');
+                if (savedFoods) {
+                    foods = JSON.parse(savedFoods);
+                    foodInput.value = foods.join('\n');
+                }
+
+                const lastSelected = localStorage.getItem('lastSelectedFood');
+                const lastTime = localStorage.getItem('lastSelectionTime');
+                if (lastSelected && lastTime) {
+                    const lastDate = new Date(lastTime);
+                    foodDisplay.innerHTML = `上次选择 (${formatDate(lastDate)})<br><span class="final-choice">${lastSelected}</span>`;
+                }
+            }
+
+            // 格式化日期
+            function formatDate(date) {
+                return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+            }
+        });
+    </script>
 </body>
+
 </html>
